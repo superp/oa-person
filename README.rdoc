@@ -2,6 +2,8 @@
 
 == Install
 
+  gem 'oa-person'
+
   rails generate oa_person:install
   
   rake db:migrate
