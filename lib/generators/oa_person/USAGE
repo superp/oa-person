@@ -1,0 +1,12 @@
+Usage:
+  rails generate oa_person:install [options]
+
+Options:
+  [--migrations]  # Indicates when to generate migrations
+                  # Default: true
+                 
+Example:
+
+  rails g oa_person:install
+  
+  rails g oa_person:install --skip-migrations

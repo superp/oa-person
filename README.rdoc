@@ -1,0 +1,15 @@
+= OmniAuth Person
+
+== Install
+
+  rails generate oa_person:install
+  
+  rake db:migrate
+
+== Usage
+
+  class Person < ActiveRecord::Base
+    include OaPerson::Models::Base
+  end
+
+Copyright (c) 2011 Aimbulance, released under the MIT license
