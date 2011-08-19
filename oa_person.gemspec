@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.authors = ["Pavel Galeta"]
   s.email = "superp1987@gmail.com"
   s.rubyforge_project = "oa-person"
-  s.homepage = "https://github.com/superp/omni_auth_person"
+  s.homepage = "https://github.com/superp/oa-person"
   
   s.files = Dir["{lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "Gemfile", "README.rdoc"]
   s.extra_rdoc_files = ["README.rdoc"]
