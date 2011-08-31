@@ -18,8 +18,8 @@ module OaPerson
         end
         
         def find_from_hash(hash)
-          return if hash.nil? || hash.keys.empty?
-          find_by_provider_and_uid(hash['provider'], hash['uid'])
+          return if hash.nil? || hash['provider'].blank? || hash['uid'].blank?
+          where([ "provider = ? AND uid = ?", hash['provider'], hash['uid'] ]).first
         end
 
         def create_from_hash(hash)
@@ -27,16 +27,18 @@ module OaPerson
             person.uid = hash['uid']
             person.provider = hash['provider']
             person.auth_hash = hash
+            
             person.name = person.user_attributes[:name]
             person.email = person.user_attributes[:email]
             person.login = person.user_attributes[:nickname]
             person.link = person.user_attributes[:link]
-            person.photo_url = person.user_attributes[:photo_url]
+            person.photo_url = person.user_attributes[:image]
           end
         end
       end
       
       module InstanceMethods
+        
         def nickname
           @nickname = self.login
           @nickname ||= extract_login(user_attributes[:email])
@@ -44,6 +46,20 @@ module OaPerson
         
         def user_attributes
           @user_attributes ||= extract_user_attributes(auth_hash)
+        end
+        
+        def stream
+          @stream ||= stream_klass.new(provider, uid, user_attributes) unless stream_klass.nil?
+        end
+        
+        def stream_klass
+          case provider.to_sym
+            when :facebook then OaPerson::Streams::Facebook
+            when :twitter then OaPerson::Streams::Twitter
+            # Not work by OpenAuth
+            #when :vkontakte then OaPerson::Streams::Vkontakte
+            else nil
+          end
         end
       
         protected
@@ -62,9 +78,11 @@ module OaPerson
               :last_name => user_info['last_name'],
               :first_name => user_info['first_name'],
               :link => (user_info['link'] || user_hash['link']),
-              :photo_url => (user_info['image'] || user_hash['image']),
+              :image => (user_info['image'] || user_hash['image']),
               :locale => (user_info['locale'] || user_hash['locale']),
-              :description => (user_info['description'] || user_hash['description'])
+              :description => (user_info['description'] || user_hash['description']),
+              :location => user_info['location'],
+              :url => user_info['urls'][provider.titleize]
             }
           end
           

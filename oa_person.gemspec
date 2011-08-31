@@ -16,4 +16,9 @@ Gem::Specification.new do |s|
   s.files = Dir["{lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "Gemfile", "README.rdoc"]
   s.extra_rdoc_files = ["README.rdoc"]
   s.require_paths = ["lib"]
+  
+  #s.add_runtime_dependency(%q<omniauth>, ["~> 0.2.6"])
+  s.add_runtime_dependency(%q<httparty>, ["~> 0.7.8"])
+  s.add_runtime_dependency(%q<fb_graph>, ["~> 2.0.1"])
+  #s.add_runtime_dependency(%q<twitter>, ["~> 1.6.2"])
 end
