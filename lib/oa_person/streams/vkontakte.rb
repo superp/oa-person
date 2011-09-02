@@ -14,6 +14,11 @@ module OaPerson
         client.wall_post(options)
       end
       
+      def image_by_type(type)
+        return nil if image.blank?
+        image
+      end
+      
       protected
       
         def connect

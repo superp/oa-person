@@ -57,7 +57,7 @@ module OaPerson
             when :facebook then OaPerson::Streams::Facebook
             when :twitter then OaPerson::Streams::Twitter
             # Not work by OpenAuth
-            #when :vkontakte then OaPerson::Streams::Vkontakte
+            when :vkontakte then OaPerson::Streams::Vkontakte
             else nil
           end
         end
