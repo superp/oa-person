@@ -28,7 +28,7 @@ module OaPerson
       
         def connect
           begin
-            OaPerson::VkClient.new(uid, access_token)
+            OaPerson::VkClient.new(uid, access_token, 2457517, 'WUJhMeMDy2opiqSqJ4K3')
           rescue Exception => e
             Rails.logger.error(e)
             return nil
