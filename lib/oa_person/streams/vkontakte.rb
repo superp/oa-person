@@ -19,6 +19,11 @@ module OaPerson
         image
       end
       
+      def profile_image_source
+        return nil if image.blank?
+        image
+      end
+      
       protected
       
         def connect

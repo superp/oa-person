@@ -22,6 +22,14 @@ module OaPerson
         image.gsub(/(type\=)square/, '\1' + type.to_s)
       end
       
+      def profile_image_source
+        a = client.albums.detect{|a| a.type == 'profile'}
+        return nil if a.blank?
+        
+        image = ::FbGraph::Photo.fetch(a.cover_photo.identifier, :access_token => access_token)
+        image.try(:source)
+      end
+      
       protected
       
         def connect
