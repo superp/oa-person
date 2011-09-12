@@ -1,10 +1,11 @@
 require "httparty"
+require 'digest/md5'
 
 module OaPerson
   class VkClient
     include ::HTTParty
         
-    base_uri "http://api.vkontakte.ru"
+    base_uri "https://api.vkontakte.ru"
     format :json
     
     API_VERSION = '3.0'
@@ -21,15 +22,15 @@ module OaPerson
       @app_secret = app_secret
     end
     
-    def default_options(method)
-      {:v => API_VERSION, :api_id => @app_id, :format => 'json', :sid => @access_token, :sig => secret_md5(method)}
+    def default_options
+      {:v => API_VERSION, :api_id => @app_id, :format => 'json'}#, :sid => @access_token}
     end
     
-    def get_profile(options)
-      method = 'getProfiles'
-      options = default_options(method).merge(:method => method, :uids => @user_id).merge(options)
+    def get_profile(options = {})
+      options = default_options.merge(:method => 'getProfiles', :uids => @user_id).merge(options)
+      options.merge!(:sig => secret_md5(options))
       
-      self.class.get('/api.php', options)
+      self.class.get('/api.php', options).body
     end
     
     def wall_post(options = {})
@@ -38,8 +39,14 @@ module OaPerson
     end
     
     protected
-      def secret_md5(method)
-        "api_id=#{@app_id}method=#{method}v=#{API_VERSION}#{@app_secret}"
+      def secret_md5(options)
+        params = ''
+        
+        options.keys.sort{|x,y| x.to_s <=> y.to_s}.each do |key|
+          params += "#{key}=#{options[key]}"
+        end
+        
+        Digest::MD5.hexdigest(params + @app_secret)
       end
   end
 end
