@@ -22,6 +22,22 @@ module OaPerson
         image.gsub(/(type\=)square/, '\1' + type.to_s)
       end
       
+      def is_fun(group_id, user_id=uid)
+        # "https://api.facebook.com/method/pages.isFan?format=json&access_token=" . USER_TOKEN . "&page_id=" . FB_FANPAGE_ID"
+        FbGraph::Query.new("SELECT uid FROM page_fan WHERE uid=#{user_id} AND page_id=#{group_id}").fetch(access_token)
+      end
+      
+      def friends
+        client.friends
+      end
+      
+      def profile_photos(user_id=uid)
+        #user = user_id == uid ? client : FbGraph::User.fetch(user_id, :access_token => access_token)
+        #album = user.albums.detect{|a| a.type == 'profile'}
+        #album.photos
+        FbGraph::Query.new("SELECT pid, src_big, src FROM photo WHERE aid IN (SELECT aid FROM album WHERE owner=#{user_id} AND type='profile')").fetch(access_token)
+      end
+      
       def profile_image_source
         a = client.albums.detect{|a| a.type == 'profile'}
         return nil if a.blank?

@@ -12,13 +12,20 @@ module OaPerson
       #    :attachment => 'link'
       #    
       def publish(options = {})
-        options = {:wall_id => uid}.merge(options)
-        client.wall.savePost(options)
+        options = {:owner_id => options[:user_id], :message => options[:message], :attachment => options[:link]}
+        client.wall.post(options)
       end
       
       def image_by_type(type)
         return nil if image.blank?
         image
+      end
+      
+      def profile_photos(user_id=uid)
+        options = {:owner_id => user_id, :count => 30}
+        photos = client.photos.getAll(options)
+        photos.shift
+        photos
       end
       
       def profile_image_source(options)
@@ -32,9 +39,7 @@ module OaPerson
         def connect
           begin
             #OaPerson::VkClient.new(uid, access_token, your_id, 'your_secret')
-            
-            #TODO get this values from omniauth config
-            app = ::VK::Serverside.new(:app_id => 'your_id', :app_secret => 'your_secret')
+            app = ::VK::Standalone.new(:app_id => OaPerson.vkontakte_app_id, :app_secret => OaPerson.vkontakte_app_secret)
             app.access_token = access_token
             app
           rescue Exception => e

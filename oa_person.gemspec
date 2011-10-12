@@ -18,6 +18,8 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   
   #s.add_runtime_dependency(%q<omniauth>, ["~> 0.2.6"])
+  s.add_runtime_dependency(%q<oa-core>, ["~> 0.3.0"])
+  s.add_runtime_dependency(%q<oa-oauth>, ["~> 0.3.0"])
   s.add_runtime_dependency(%q<httparty>, ["~> 0.7.8"])
   s.add_runtime_dependency(%q<fb_graph>, ["~> 2.0.1"])
   s.add_runtime_dependency(%q<vk-ruby>, ["~> 0.6.21"])

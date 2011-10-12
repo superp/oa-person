@@ -28,5 +28,30 @@ module OaPerson
         migration_template "create_people.rb", File.join('db/migrate', "oa_person_create_people.rb")
       end
     end
+    
+    def copy_controllers
+      copy_file('sessions_controller.rb', 'app/controllers/sessions_controller.rb')
+    end
+    
+    def copy_config
+      copy_file('config.rb', 'config/initializers/omniauth.rb')
+    end
+    
+    def add_routes
+      log :add_routes, "sessions"
+      route "match '/auth/:provider/callback', :to => 'sessions#create'"
+      route "match '/auth/failure', :to => 'sessions#failure'"
+      route "match '/signout' => 'sessions#destroy', :as => :signout"
+    end
+    
+    def add_helpers
+      code = "include OaPerson::Helpers"
+      sentinel = /protect_from_forgery/
+       
+      in_root do
+        inject_into_file 'app/controllers/application_controller.rb', "\n  #{code}\n", { :after => sentinel, :verbose => false }
+      end
+    end
+
   end
 end
