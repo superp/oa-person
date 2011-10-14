@@ -16,6 +16,11 @@ module OaPerson
         client.wall.post(options)
       end
       
+      def friends
+        options = {:uid => uid, :fields => "uid,first_name,last_name", :timestamp => Time.now.getutc.to_i, :random => Time.now.to_i}
+        client.friends.get(options)
+      end
+      
       def image_by_type(type)
         return nil if image.blank?
         image
