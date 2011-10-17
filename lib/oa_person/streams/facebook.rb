@@ -16,6 +16,16 @@ module OaPerson
         client.feed!(options)
       end
       
+      def publish_by_user(user_id, options = {})
+        begin
+          user = FbGraph::User.new(user_id, :access_token => access_token)
+          user.feed!(options) 
+        rescue Exception => e
+          Rails.logger.error(e)
+          return nil
+        end
+      end
+      
       # facebook image sizes => square | small | normal | large 
       def image_by_type(type)
         return nil if image.blank?
