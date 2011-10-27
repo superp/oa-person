@@ -26,6 +26,25 @@ module OaPerson
         end
       end
       
+      # Upload tagged photo to album
+      # options are:
+      #    :access_token => 'secret token'
+      #    :album_id => 289534577726639
+      #    :source => File.new('/Users/nov/Desktop/nov.gif')
+      #    :message => "hello world"
+      #    :tags => [{:id => 579612276, :name => "with Facebook profile link", :x => 5, :y => 0}, {:name => "without profile link", :x => 0, :y => 95}]
+      def post_photo_to_album(options = {})
+        tags = options[:tags] || []
+        tags.map!{|tag| FbGraph::Tag.new(tag)}
+        
+        album = FbGraph::Album.new(options[:album_id], :access_token => options[:access_token])
+        album.photo!(
+          :source => options[:source],
+          :message => options[:message],
+          :tags => tags
+        )
+      end
+      
       # facebook image sizes => square | small | normal | large 
       def image_by_type(type)
         return nil if image.blank?
