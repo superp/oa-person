@@ -37,7 +37,7 @@ module OaPerson
         tags = options[:tags] || []
         tags.map!{|tag| FbGraph::Tag.new(tag)}
         
-        album = FbGraph::Album.new(options[:album_id], :access_token => options[:access_token])
+        album = FbGraph::Album.new(options[:album_id], :access_token => (options[:access_token] || access_token))
         album.photo!(
           :source => options[:source],
           :message => options[:message],
