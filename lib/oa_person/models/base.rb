@@ -31,7 +31,7 @@ module OaPerson
             person.name = person.user_attributes[:name]
             person.email = person.user_attributes[:email]
             person.login = person.user_attributes[:nickname]
-            person.link = person.user_attributes[:link]
+            person.link = person.user_attributes[:url]
             person.photo_url = person.user_attributes[:image]
           end
         end
@@ -66,8 +66,9 @@ module OaPerson
           
           def extract_user_attributes(hash)
             user_credentials = hash['credentials'] || {}
-            user_info = hash['user_info'] || {}
-            user_hash = hash['extra'] ? (hash['extra']['user_hash'] || {}) : {}
+            
+            user_info = hash['info'] || {}
+            user_hash = hash['extra'] || {}
             
             { 
               :token => user_credentials['token'],
@@ -77,7 +78,6 @@ module OaPerson
               :nickname => user_info['nickname'],
               :last_name => user_info['last_name'],
               :first_name => user_info['first_name'],
-              :link => (user_info['link'] || user_hash['link']),
               :image => (user_info['image'] || user_hash['image']),
               :locale => (user_info['locale'] || user_hash['locale']),
               :description => (user_info['description'] || user_hash['description']),

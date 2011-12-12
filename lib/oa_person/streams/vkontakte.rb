@@ -21,6 +21,15 @@ module OaPerson
         client.friends.get(options)
       end
       
+      # Vkontakte post photo
+      # 1) photos.getUploadServer 
+      # 2) POST-запрос (поля file1-file5)
+      # 3) photos.save
+      #    
+      def post_photo(options = {})
+        
+      end
+      
       def image_by_type(type)
         return nil if image.blank?
         image

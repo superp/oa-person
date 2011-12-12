@@ -1,6 +1,7 @@
 # encoding: utf-8
-require 'omniauth/core'
-require 'omniauth/oauth'
+require 'omniauth'
+require 'omniauth-vkontakte'
+require 'omniauth-facebook'
 
 module OaPerson
   module Models
